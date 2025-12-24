@@ -1,6 +1,6 @@
-# customer---transaction-analsis
+# customer-transaction-analsis
 SQL &amp; Looker Studio analysis on customer transaction behavior
-## Project Structure
+''' ## Project Structure
 customer-transaction-analysis/
 sql/
 customer_lifetime_value.sql
@@ -10,3 +10,4 @@ dasboard/
 looker_link.txt
 presentatio/
 insight_summar.pdf
+'''
