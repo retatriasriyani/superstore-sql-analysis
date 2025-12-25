@@ -1,13 +1,23 @@
--- DATA OVERVIEW
---Skala data & revenue
+/* =====================================================
+   CUSTOMER TRANSACTION ANALYSIS
+   Dataset: customer_transactions_final
+   Author: Reta Tri Asriani
+   ===================================================== */
+
+/* =========================
+   		DATA OVERVIEW
+   ========================= */
+-- Skala data & revenue
 SELECT 
 	count(*) AS jumlah_transaksi,
 	sum(purchase_amount) AS total_revenue,
 	round(avg(purchase_amount), 2) AS AVG_revenue
 FROM 
 	customer_transactions_final
-	
--- PRODUCT & SEASON PERFORMANCE
+
+/* ======================================
+   		PRODUCT & SEASON PERFORMANCE
+   ====================================== */
 -- Top kategori berdasarkan revenue
 SELECT
 	category,
@@ -49,7 +59,9 @@ SELECT
 FROM ranked
 WHERE rn = 1;
 
--- CUSTOMER VALUE & SEGMENTATION
+/* =========================================
+   		CUSTOMER VALUE & SEGMENTATION
+   ========================================= */
 -- Subscription vs non-subscription performance
 SELECT
 	subscription_status,
@@ -102,7 +114,9 @@ FROM
 GROUP BY 
 	customer_id;
 
--- DISCOUNT EFFECTIVENESS
+/* ======================================
+   		DISCOUNT EFFECTIVENESS
+   ====================================== */
 -- Dampak diskon terhadap nilai transaksi & volume
 SELECT
 	discount_applied,
