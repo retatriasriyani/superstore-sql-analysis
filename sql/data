@@ -1,0 +1,21 @@
+/* -----------------------------TABLE------------------------------*/
+CREATE TABLE "customer_transactions_final" (
+	"customer_id"	INTEGER,
+	"age"	INTEGER,
+	"age_group"	TEXT,
+	"gender"	TEXT,
+	"item_purchased"	TEXT,
+	"category"	TEXT,
+	"purchase_amount"	INTEGER,
+	"location"	TEXT,
+	"size"	TEXT,
+	"color"	TEXT,
+	"season"	TEXT,
+	"review_rating"	REAL,
+	"subscription_status"	TEXT,
+	"shipping_type"	TEXT,
+	"discount_applied"	TEXT,
+	"previous_purchases"	INTEGER,
+	"payment_method"	TEXT,
+	"frequency_of_purchases_days"	INTEGER
+);
