@@ -1,0 +1,159 @@
+-- DATA OVERVIEW
+--Skala data & revenue
+SELECT 
+	count(*) AS jumlah_transaksi,
+	sum(purchase_amount) AS total_revenue,
+	round(avg(purchase_amount), 2) AS AVG_revenue
+FROM 
+	customer_transactions_final
+	
+-- PRODUCT & SEASON PERFORMANCE
+-- Top kategori berdasarkan revenue
+SELECT
+	category,
+	sum(purchase_amount) AS total_pembelian
+FROM 
+	customer_transactions_final
+GROUP BY 
+	category
+ORDER BY 
+	total_pembelian DESC;
+
+-- Kategori terlaris per season
+WITH ranked AS (
+    SELECT 
+        season,
+        category,
+        SUM(purchase_amount) AS total_sales,
+		rank () OVER (PARTITION BY season ORDER BY SUM (purchase_amount) DESC) AS rank_season
+    FROM customer_transactions_final
+    GROUP BY season, category
+)
+SELECT season, category, total_sales
+FROM ranked
+WHERE rank_season = 1;
+--------------------------atau------------------------------
+WITH ranked AS (
+    SELECT 
+        season,
+        category,
+        SUM(purchase_amount) AS total_sales,
+		ROW_NUMBER() OVER (PARTITION BY season ORDER BY SUM(purchase_amount) DESC) AS rn
+    FROM customer_transactions_final
+    GROUP BY season, category
+)
+SELECT 
+	season, 
+	category, 
+	total_sales
+FROM ranked
+WHERE rn = 1;
+
+-- CUSTOMER VALUE & SEGMENTATION
+-- Subscription vs non-subscription performance
+SELECT
+	subscription_status,
+	sum(purchase_amount) AS total_revenue,
+	count(*) AS total_transaksi,
+	round(avg(purchase_amount),2) AS AVG_total_pembelian
+FROM 
+	customer_transactions_final
+GROUP BY
+	subscription_status
+
+ -- Formal customer value segmentation (High/Mid/Low
+ WITH customer_value AS (
+    SELECT
+        customer_id,
+        sum(purchase_amount) AS total_revenue
+    FROM 
+		customer_transactions_final
+    GROUP BY 
+		customer_id
+),
+segmented AS (
+    SELECT
+        customer_id,
+        total_revenue,
+        ntile(3) OVER (ORDER BY total_revenue DESC) AS segment
+    FROM customer_value
+)
+SELECT
+    customer_id,
+    total_revenue,
+    CASE segment
+        WHEN 1 THEN 'High Value'
+        WHEN 2 THEN 'Mid Value'
+        ELSE 'Low Value'
+    END AS customer_segment
+FROM segmented;
+
+-- Frequency-based segmentation (proxy repeat behavior)
+SELECT
+    customer_id,
+    count(*) AS total_transaksi,
+    CASE
+        WHEN count(*) >= 5 THEN 'Frequent Buyer'
+        WHEN count(*) >= 2 THEN 'Occasional Buyer'
+        ELSE 'One-time Buyer'
+    END AS frequency_segment
+FROM 
+	customer_transactions_final
+GROUP BY 
+	customer_id;
+
+-- DISCOUNT EFFECTIVENESS
+-- Dampak diskon terhadap nilai transaksi & volume
+SELECT
+	discount_applied,
+	avg(purchase_amount) AS AVG_purchase,
+	count(*) AS total_kastemer,
+	round(avg(purchase_amount),2) AS AVG_pembelian
+FROM
+	customer_transactions_final
+GROUP BY
+	discount_applied;
+	
+-- Diskon vs repeat purchase (behavioral impact)
+SELECT
+	discount_applied,
+	round(avg(previous_purchases), 2) AS avg_preview
+FROM
+	customer_transactions_final
+GROUP BY
+	discount_applied;
+	
+-- ADVANCED INSIGHT
+-- High value but low satisfaction customers
+WITH avg_rating_global AS (
+    SELECT 
+        AVG(review_rating) AS avg_rating
+    FROM 
+        customer_transactions_final
+),
+customer_summary AS (
+    SELECT
+        customer_id,
+        SUM(purchase_amount) AS total_revenue,
+        AVG(review_rating) AS customer_avg_rating
+    FROM 
+        customer_transactions_final
+    GROUP BY 
+        customer_id
+)
+SELECT
+    customer_id,
+    total_revenue,
+    ROUND(customer_avg_rating, 2) AS customer_avg_rating,
+    ROUND(avg_rating, 2) AS global_avg_rating
+FROM 
+    customer_summary
+CROSS JOIN 
+    avg_rating_global
+WHERE 
+    customer_avg_rating < avg_rating
+ORDER BY 
+    total_revenue DESC
+LIMIT 5;
+
+
