@@ -29,7 +29,7 @@ Profit margin dihitung sebagai calculated column untuk membandingkan efisiensi a
 ---
 
 ## Use Case 3 – Discount Impact Analysis
-Kolom discount dibersihkan dan dikonversi ke numerik menggunakan `CAST` dan `REPLACE`.
+Kolom discount dibersihkan dengan mengganti pemisah desimal dari koma ( , ) menjadi titik ( . ), kemudian dikonversi ke numerik menggunakan `CAST` dan `REPLACE`.
 Nilai diskon kemudian dikelompokkan (binning) menggunakan `CASE WHEN`.
 
 **SQL Techniques:**
