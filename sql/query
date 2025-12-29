@@ -11,8 +11,7 @@ GROUP BY
 HAVING
 	sum (profit) < 0
 ORDER BY
-	total_sales DESC
-LIMIT 5;
+	total_sales DESC;
 
 --Category & Sub-category Performance
 SELECT
@@ -73,7 +72,7 @@ WITH customer_summary AS (
 	FROM
 		superstore_dataset
 	GROUP BY
-		customer
+		customer 
 ),
 average_frequency AS (
 	SELECT
@@ -100,8 +99,7 @@ SELECT
 FROM
 	customer_segmentation
 ORDER BY
-	total_sales DESC
-LIMIT 10;
+	total_sales DESC;
 
  --Regional Performance Analysis
 WITH region_summary AS (
@@ -140,8 +138,6 @@ SELECT
 	sum (profit) AS total_profit
 FROM
 	superstore_dataset
-WHERE 
-	substr(order_date, 7, 4) = '2022'
 GROUP BY
 	month
 ),
@@ -167,5 +163,5 @@ SELECT
 FROM
 	sales_previous
 ORDER BY
-	month
+	month;
 
