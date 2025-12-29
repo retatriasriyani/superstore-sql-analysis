@@ -1,8 +1,9 @@
 # SQL Portfolio: Retail Sales Analysis 
 
 ## Dataset Overview
-The dataset contains transaction-level retail data including product, category, customer, region, sales, profit, discount, and order date.
-Order date is stored in DD/MM/YYYY format and was processed using string-based date handling for time series analysis in SQLite.
+The dataset contains transaction-level retail data, including product, category, customer, region, sales, profit, discount, and order date.
+Order dates are stored as TEXT in DD/MM/YYYY format and processed using string-based date handling to support time series analysis in SQLite.
+Discount values are cleaned by converting decimal separators from commas to dots prior to analysis.
 
 ## Use Case
 
