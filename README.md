@@ -49,5 +49,3 @@ The project explores:
 - Time series analysis reveals periodic patterns in sales activity.
 
 ---
-
----
